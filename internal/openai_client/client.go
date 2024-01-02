@@ -26,13 +26,22 @@ func (c *ChatGPTClient) SetDebug(debug bool) {
 	c.debug = debug
 }
 
+func (c *ChatGPTClient) decorateMessage(message string) string {
+	return fmt.Sprintf(
+		"Provide me a command compatible with bash that would do the following: %s."+
+			"Do not include any formatting or descriptions, provide plain text command"+
+			"that can be copied directly to the terminal and executed.",
+		message,
+	)
+}
+
 func (c *ChatGPTClient) PromptCompletions(message string) (string, error) {
 	// Make a request to the ChatGPT3.5 API
 	data := map[string]interface{}{
 		"model": model,
 		"messages": []interface{}{
-			map[string]interface{}{"role": "system", "content": "You are a helpful assistant."},
-			map[string]interface{}{"role": "user", "content": message}},
+			map[string]interface{}{"role": "system", "content": "You are an interactive tool providing unix command generation."},
+			map[string]interface{}{"role": "user", "content": c.decorateMessage(message)}},
 		"max_tokens": 150,
 	}
 
