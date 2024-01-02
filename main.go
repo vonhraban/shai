@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/vonhraban/shai/internal/openai_client"
 	"os"
-
-	"github.com/vonhraban/shai/openai_client"
 
 	"github.com/joho/godotenv"
 )
