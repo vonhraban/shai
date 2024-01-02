@@ -28,9 +28,9 @@ func (c *ChatGPTClient) SetDebug(debug bool) {
 
 func (c *ChatGPTClient) decorateMessage(message string) string {
 	return fmt.Sprintf(
-		"Provide me a command compatible with bash that would do the following: %s."+
-			"Do not include any formatting or descriptions, provide plain text command"+
-			"that can be copied directly to the terminal and executed.",
+		"Provide me a command compatible with bash that would do the following: \"%s\"."+
+			"Do not include any formatting or descriptions, provide plain text command "+
+			"that can be copied directly to the terminal and executed. Do not include any commentary",
 		message,
 	)
 }
@@ -40,8 +40,11 @@ func (c *ChatGPTClient) PromptCompletions(message string) (string, error) {
 	data := map[string]interface{}{
 		"model": model,
 		"messages": []interface{}{
-			map[string]interface{}{"role": "system", "content": "You are an interactive tool providing unix command generation."},
-			map[string]interface{}{"role": "user", "content": c.decorateMessage(message)}},
+			map[string]interface{}{"role": "system", "content": "" +
+				"You are an unix command generation assitant. Output only code. Do not ouput" +
+				"additional remarks about the code. Dot not output anything that is not a terminal command." +
+				"Do not add any markdown formatting. The commands need to be compatible with zsh."},
+			map[string]interface{}{"role": "user", "content": message}},
 		"max_tokens": 150,
 	}
 
