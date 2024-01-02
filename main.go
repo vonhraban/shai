@@ -9,8 +9,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var debug bool
+var apiKey string
+
 func main() {
 	godotenv.Load()
+	apiKey = os.Getenv("SHAI_OPENAI_API_KEY")
+	_, debug = os.LookupEnv("SHAI_DEBUG")
 
 	args := os.Args
 	if len(args) == 1 {
@@ -25,12 +30,13 @@ func main() {
 		return
 	}
 
-	apiKey := os.Getenv("SHAI_OPENAI_API_KEY")
 	// Set your conversation prompt here
 	//prompt := "What is square root of 49"
 	prompt := input
 
 	client := openai_client.NewChatGPTClient(apiKey)
+	client.SetDebug(debug)
+	
 	res, err := client.PromptCompletions(prompt)
 	if err != nil {
 		panic(err)
