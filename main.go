@@ -3,29 +3,35 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/joho/godotenv"
 	"github.com/vonhraban/shai/internal/openai_client"
 	"os"
 	"os/exec"
 	"strings"
 
-	"github.com/joho/godotenv"
 	"github.com/pterm/pterm"
 )
 
 var debug bool
 var apiKey string
 
-func main() {
+func init() {
 	godotenv.Load()
+
+	apiKey = os.Getenv("SHAI_OPENAI_API_KEY")
+
+	debugEnvVar := os.Getenv("SHAI_DEBUG")
+	debug = debugEnvVar != "" && debugEnvVar != "0"
+}
+
+func main() {
 	apiKey = os.Getenv("SHAI_OPENAI_API_KEY")
 	debugEnvVar := os.Getenv("SHAI_DEBUG")
 	if debugEnvVar != "" && debugEnvVar != "0" {
 		debug = true
 	}
 
-	args := os.Args
-
-	input := strings.Join(args[1:], " ")
+	input := getInputFromArgs(os.Args)
 
 	for input == "" {
 		input = askPrompt("")
@@ -49,6 +55,10 @@ func main() {
 	pterm.Info.Printfln("Executing")
 
 	executeCommand(command)
+}
+
+func getInputFromArgs(args []string) string {
+	return strings.Join(args[1:], " ")
 }
 
 func promptForCommand(client *openai_client.ChatGPTClient, input string) string {
