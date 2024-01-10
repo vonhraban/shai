@@ -10,5 +10,5 @@ func (c *DummyClient) PromptCompletions(message string) (string, error) {
 	// imitate actual loading time
 	time.Sleep(2 * time.Second)
 
-	return "This is a dummy response; disable DUMMY_API to connect to the real API	", nil
+	return "echo 'This is a dummy response; disable DUMMY_API to connect to the real API'", nil
 }
