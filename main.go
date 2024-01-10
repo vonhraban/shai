@@ -2,31 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"github.com/vonhraban/shai/internal/openai_client"
 	"os"
 	"strings"
 )
 
-var debug bool
-var apiKey string
+var config *Config
 
 func init() {
-	godotenv.Load()
-
-	apiKey = os.Getenv("SHAI_OPENAI_API_KEY")
-
-	debugEnvVar := os.Getenv("SHAI_DEBUG")
-	debug = debugEnvVar != "" && debugEnvVar != "0"
+	config = initConfig()
 }
 
 func main() {
-	apiKey = os.Getenv("SHAI_OPENAI_API_KEY")
-	debugEnvVar := os.Getenv("SHAI_DEBUG")
-	if debugEnvVar != "" && debugEnvVar != "0" {
-		debug = true
-	}
-
 	input := getInputFromArgs(os.Args)
 
 	for input == "" {
@@ -38,8 +25,8 @@ func main() {
 		return
 	}
 
-	client := openai_client.NewChatGPTClient(apiKey)
-	client.SetDebug(debug)
+	client := openai_client.NewChatGPTClient(config.APIKey)
+	client.SetDebug(config.DebugMode)
 
 	command := promptForInputInteractive(client, input)
 
