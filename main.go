@@ -27,7 +27,7 @@ func main() {
 
 	var client openai_client.Client
 	if !config.DummyAPI {
-		client = openai_client.NewChatGPTClient(config.APIKey)
+		client = openai_client.NewChatGPTClient(config.APIHost, config.APIKey)
 	} else {
 		client = &openai_client.DummyClient{}
 	}

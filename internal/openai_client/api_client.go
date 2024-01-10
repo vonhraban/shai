@@ -9,16 +9,18 @@ import (
 )
 
 type ChatGPTClient struct {
-	apiKey string
-	debug  bool
+	apiHost string
+	apiKey  string
+	debug   bool
 }
 
-const completionsUrl = "https://api.openai.com/v1/chat/completions"
+const completionsUrl = "v1/chat/completions"
 const model = "gpt-3.5-turbo"
 
-func NewChatGPTClient(apiKey string) *ChatGPTClient {
+func NewChatGPTClient(apiHost, apiKey string) *ChatGPTClient {
 	return &ChatGPTClient{
-		apiKey: apiKey,
+		apiHost: apiHost,
+		apiKey:  apiKey,
 	}
 }
 
@@ -69,7 +71,7 @@ func (c *ChatGPTClient) PromptCompletions(message string) (string, error) {
 }
 
 func (c *ChatGPTClient) post(payload []byte) ([]byte, error) {
-	req, _ := http.NewRequest("POST", completionsUrl, bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.apiHost, completionsUrl), bytes.NewBuffer(payload))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+c.apiKey)
 

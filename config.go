@@ -9,7 +9,10 @@ type Config struct {
 	APIKey    string
 	DebugMode bool
 	DummyAPI  bool
+	APIHost   string
 }
+
+const defaultAPIHost = "https://api.openai.com"
 
 func initConfig() *Config {
 	godotenv.Load()
@@ -22,6 +25,7 @@ func initConfig() *Config {
 		APIKey:    apiKey,
 		DebugMode: debug,
 		DummyAPI:  dummyAPI,
+		APIHost:   defaultAPIHost, // make this configurable for the use with other models
 	}
 }
 
