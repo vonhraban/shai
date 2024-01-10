@@ -15,7 +15,7 @@ func askPrompt(defaultValue string) string {
 	return input
 }
 
-func promptForInputInteractive(client *openai_client.ChatGPTClient, input string) string {
+func promptForInputInteractive(client openai_client.Client, input string) string {
 	// Create a multi printer. This allows multiple spinners to print simultaneously.
 	multi := pterm.DefaultMultiPrinter
 	writer := multi.NewWriter()

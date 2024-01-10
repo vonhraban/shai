@@ -25,7 +25,13 @@ func main() {
 		return
 	}
 
-	client := openai_client.NewChatGPTClient(config.APIKey)
+	var client openai_client.Client
+	if !config.DummyAPI {
+		client = openai_client.NewChatGPTClient(config.APIKey)
+	} else {
+		client = &openai_client.DummyClient{}
+	}
+
 	client.SetDebug(config.DebugMode)
 
 	command := promptForInputInteractive(client, input)
