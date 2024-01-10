@@ -56,7 +56,7 @@ shai
 
 **Note:** the setup wizard is currently a placeholder and not fully implemented.
 
-A setup wizard is there so simplify the configuration process. To invoke the setup wizard, run:
+A setup wizard is there to simplify the configuration process. To invoke the setup wizard, run:
 
 ```bash
 shai setup
